@@ -1,142 +1,137 @@
-
 <div align="center">
 
 <img src="docs/images/hindsight-banner.png" alt="Hindsight — Agent Memory That Learns" width="100%"/>
 
 # Regression Intelligence
-
 ### A QA Agent That Never Forgets a Bug
 
-An AI-powered regression intelligence system that helps QA engineers reuse historical defect knowledge to investigate recurring bugs, identify regression risks, and generate actionable insights using Hindsight memory.
+**An AI-powered regression analysis assistant that remembers past defects, retrieves relevant historical evidence, and helps QA engineers investigate recurring issues.**
 
-<p>
-  <img src="https://img.shields.io/badge/AI%20Memory-Hindsight-0D9488?style=for-the-badge" alt="Hindsight"/>
-  <img src="https://img.shields.io/badge/Backend-FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI"/>
-  <img src="https://img.shields.io/badge/Frontend-React-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React"/>
-  <img src="https://img.shields.io/badge/Language-Python-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python"/>
-</p>
+[![React](https://img.shields.io/badge/React-Frontend-61DAFB?logo=react&logoColor=black)](https://react.dev/)
+[![Vite](https://img.shields.io/badge/Vite-Frontend-646CFF?logo=vite&logoColor=white)](https://vite.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-Styling-06B6D4?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Python](https://img.shields.io/badge/Python-Backend-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-API-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Hindsight](https://img.shields.io/badge/Memory-Hindsight-0D9488)](https://github.com/vectorize-io/hindsight)
+[![Groq](https://img.shields.io/badge/LLM-Groq_Compatible_API-F55036)](https://groq.com/)
 
-<p>
-  <a href="https://github.com/Purna3110/hfhy">Repository</a>
-  &nbsp;•&nbsp;
-  <a href="https://github.com/vectorize-io/hindsight">Hindsight</a>
-</p>
+[Problem Statement](#-problem-statement) •
+[Proposed Solution](#-proposed-solution) •
+[Memory Evaluation](#-memory-performance--accuracy) •
+[Architecture](#-system-architecture) •
+[Setup Guide](#-step-by-step-setup-guide)
 
 </div>
 
 ---
 
-## Table of Contents
+## 1. 🎯 Problem Statement
 
-- [1. Problem Statement](#1-problem-statement)
-- [2. Proposed Solution](#2-proposed-solution)
-- [3. Memory Performance and Accuracy](#3-memory-performance-and-accuracy)
-- [4. System Architecture](#4-system-architecture)
-- [5. Step-by-Step Setup Guide](#5-step-by-step-setup-guide)
-- [6. Current Scope and Future Improvements](#6-current-scope-and-future-improvements)
+### The problem: Software bugs are remembered by people, not systems
 
----
+Software teams repeatedly encounter defects that resemble issues they have already investigated. However, the knowledge gathered during previous investigations is often scattered across bug reports, test cases, logs, documentation, and team discussions.
 
-## 1. Problem Statement
+When a similar defect appears again, QA engineers may need to repeat much of the original investigation.
 
-### The problem: QA teams keep rediscovering the same bugs.
+**Key pain points**
 
-Software applications evolve continuously. Every new feature, code change, configuration update, or deployment can introduce regressions into previously working functionality.
-
-QA engineers often investigate these issues using bug trackers, old test reports, documentation, and previous investigation notes.
-
-However, important knowledge is scattered across these sources. When a similar defect appears again, testers may need to repeat the same investigation because the system does not effectively connect the current issue with relevant historical defects.
-
-### Key pain points
-
-- **Repeated investigations:** Similar bugs can require the same debugging effort multiple times.
-- **Lost institutional knowledge:** Previous root causes, fixes, and regression checks may be difficult to retrieve.
-- **Limited contextual understanding:** A conventional search may return matching words without explaining why a historical defect is relevant.
-- **Inconsistent regression coverage:** Important test cases may be overlooked when investigating a recurring issue.
-- **No continuous learning:** A conventional LLM may not retain project-specific defect knowledge across independent sessions unless an appropriate memory system is provided.
-
-### The real-world impact
-
-These challenges can increase debugging effort, delay releases, and make regression testing less consistent.
+- **Recurring defects:** Similar issues can reappear across releases and features.
+- **Lost historical context:** Previous root-cause findings and workarounds can be difficult to retrieve.
+- **Repeated investigations:** Engineers spend time rediscovering information that may already exist.
+- **Fragmented knowledge:** Historical defect information is not always connected to the current issue.
+- **Manual regression analysis:** QA engineers must determine which previous failures are relevant to a new investigation.
 
 <div align="center">
 
-<img src="docs/images/integration-overview.jpg" alt="Regression Intelligence integration overview" width="90%"/>
+<img src="docs/images/problem-statement.png" alt="The challenges of manual regression testing and fragmented defect knowledge" width="100%"/>
 
 </div>
 
+### Why this matters
+
+A defect report is more useful when it can be connected to relevant historical evidence. Without that context, engineers risk overlooking known failure patterns and repeating investigation work.
+
+Regression Intelligence explores how persistent AI memory can help make that historical knowledge available when a new issue is investigated.
+
 ---
 
-## 2. Proposed Solution
+## 2. 💡 Proposed Solution
 
-### Regression Intelligence — A QA Agent That Never Forgets a Bug
+### Meet Regression Intelligence
 
-Regression Intelligence is designed to turn historical defect information into reusable engineering knowledge.
+Regression Intelligence is an AI-assisted QA application designed to retain defect knowledge and reuse it during future regression investigations.
 
-Instead of treating every investigation as a new problem, the system stores defect details in Hindsight, retrieves relevant historical memories, and uses contextual reasoning to identify recurring patterns and recommend regression checks.
+Instead of treating every investigation as an isolated interaction, the application uses **Hindsight's Retain, Recall, and Reflect operations** to support a memory-aware workflow.
 
-### How it works
+<div align="center">
 
-**1. Retain — Learn from a defect**
+<img src="docs/images/integration-overview.jpg" alt="Regression Intelligence integration overview" width="85%"/>
 
-When a tester submits a defect, the backend sends structured information to Hindsight.
+</div>
 
-The information can include:
+### The three core operations
 
-- Defect ID and title
-- Affected component
-- Requirement ID
-- Severity
-- Root cause
-- Fix
-- Related test cases
-
-This information becomes part of the project's defect memory.
-
-**2. Recall — Retrieve relevant history**
-
-When a tester investigates a new issue, the backend sends a query to Hindsight.
-
-Hindsight retrieves relevant historical memories and supporting facts from the configured memory bank. The goal is to connect the new investigation with previously recorded defects.
-
-**3. Reflect — Identify regression risks**
-
-The backend asks Hindsight to analyze the historical context for recurring defect patterns and relevant regression checks.
-
-The returned result can help a tester understand:
-
-- Which historical defects may be relevant
-- Which components or requirements may be affected
-- What recurring failure patterns were recorded
-- Which regression checks should be considered
-
-**4. Display — Help the tester investigate**
-
-The frontend presents the returned memories and regression insights so that the tester can use historical evidence during the investigation.
+| Operation | Purpose | How it is used |
+|---|---|---|
+| **Retain** | Store new knowledge | When a defect is submitted, the backend sends its information to Hindsight for storage in the configured memory bank. |
+| **Recall** | Retrieve relevant history | When a regression investigation begins, the backend asks Hindsight for relevant historical defect memories. |
+| **Reflect** | Analyze remembered context | The backend uses Hindsight's reflection capability to reason over the investigation and recalled context. |
 
 ### Where exactly is Hindsight used?
 
-Hindsight is the core memory layer of Regression Intelligence. The backend integrates the official `hindsight-client` SDK.
+Hindsight is the **persistent memory layer** of Regression Intelligence.
 
-| Operation | Application endpoint | Purpose |
-|---|---|---|
-| Retain | `POST /api/memory/defects` | Store a new defect in memory |
-| Recall | `POST /api/regression/recall` | Retrieve relevant historical defects |
-| Reflect | `POST /api/regression/reflect` | Generate insights using historical defect knowledge |
+It is integrated into the FastAPI backend through a dedicated Hindsight service using the official Python SDK.
 
-Hindsight provides the memory operations; FastAPI coordinates the requests, and the React frontend presents the results.
+**1. When a defect is submitted — Retain**
 
-### Why use Hindsight?
+The frontend sends defect information to the backend.
 
-A standard LLM can reason about information supplied in a prompt, but it does not automatically have access to a project's previous investigations.
+`POST /api/memory/defects`
 
-Hindsight provides a persistent memory layer that can be queried across separate investigations. Its retain, recall, and reflect operations make it possible to reuse past defect knowledge rather than relying exclusively on the current prompt.
+The backend validates the request and invokes the Hindsight retention operation. This allows defect information to become available as historical context for future investigations.
 
-The application uses these operations to support a memory-driven QA workflow.
+**2. When a regression is investigated — Recall**
+
+The application sends the investigation request to the backend.
+
+`POST /api/regression/recall`
+
+The backend retrieves potentially relevant memories from Hindsight rather than relying exclusively on information supplied in the current request.
+
+**3. When insights are generated — Reflect**
+
+The backend invokes the reflection operation.
+
+`POST /api/regression/reflect`
+
+Hindsight uses the available context to produce a reflection that can support the regression analysis displayed in the UI.
+
+### What about observations?
+
+Hindsight supports the development of higher-level observations from retained information. These observations can help organize knowledge beyond individual raw memories.
+
+Regression Intelligence relies on Hindsight's memory capabilities; the application should not be understood as directly creating or managing observations unless that behavior is explicitly implemented in its own code.
+
+### What about Groq?
+
+The project also includes a separate Groq-compatible LLM test endpoint. It is useful for testing LLM connectivity and responses.
+
+However, **the current main Regression Analysis workflow uses Hindsight's recall and reflection operations**. The separate Groq endpoint should not be confused with the main regression-analysis path.
+
+### What makes this approach different?
+
+A conventional LLM interaction may lack persistent knowledge of earlier investigations. A retrieval-based system can search stored information, while a memory system such as Hindsight also supports retaining and reflecting on information over time.
+
+Regression Intelligence explores how these memory capabilities can help QA engineers reuse historical defect knowledge instead of starting every investigation from scratch.
 
 ---
 
-## 3. Memory Performance and Accuracy
+## 3. 📊 Memory Performance & Accuracy
+
+### Evaluating the impact of persistent memory
+
+The following graphic illustrates how Regression Intelligence could be evaluated against other approaches to regression analysis.
 
 <div align="center">
 
@@ -144,39 +139,39 @@ The application uses these operations to support a memory-driven QA workflow.
 
 </div>
 
-### What does this comparison illustrate?
+> **Important:** The percentages shown in this graphic are illustrative values, not verified experimental results from the project. They must not be interpreted as measured accuracy, a benchmark, or proof that one approach outperforms another. Replace them with results from a documented evaluation before presenting the chart as experimental evidence.
 
-The graphic compares four approaches to regression analysis:
+### What should be measured?
 
-- Manual regression testing
-- A standard LLM without project-specific memory
-- A retrieval-augmented QA assistant
-- Regression Intelligence with Hindsight
+A meaningful evaluation should compare approaches using the same test scenarios and expected outcomes.
 
-The intention is to illustrate how persistent, relevant defect knowledge could support a more context-aware investigation.
+| Evaluation dimension | What it measures |
+|---|---|
+| Relevant defect retrieval | Whether the system retrieves the expected historical defect. |
+| Recall quality | Whether relevant historical evidence is retrieved without excessive irrelevant results. |
+| Analysis correctness | Whether the generated analysis is consistent with the expected outcome and supporting evidence. |
+| Unsupported claims | Whether the system produces claims that cannot be supported by the available context. |
+| Response completeness | Whether the response covers the important aspects of the investigation. |
+| No-history behavior | Whether the system handles investigations with no relevant historical memories appropriately. |
 
-**Important:** The percentages shown in the graphic are illustrative values, not verified experimental results. They must not be interpreted as measured accuracy, proven improvements, or a validated benchmark.
+### Evaluation methodology
 
-### How should memory performance be evaluated?
+The project includes a synthetic evaluation harness designed to compare memory-enabled and memory-disabled evaluation paths across predefined scenarios.
 
-A meaningful evaluation should compare the same synthetic or appropriately authorized test scenarios under controlled conditions, with and without persistent memory.
+The scenarios include:
 
-Relevant metrics include:
+- Payment retries following a gateway timeout.
+- Session renewal and stale-token state.
+- CSV exports that lose rows after a locale change.
+- An unrelated feature for which no seeded historical defect should be retrieved.
 
-- **Historical defect retrieval:** Whether the expected prior defect is retrieved.
-- **Recall@K:** Whether the relevant defect appears within the top K retrieved results.
-- **Precision@K:** How many of the retrieved results are relevant.
-- **Evidence relevance:** Whether generated insights are supported by the retrieved memories.
-- **Regression recommendation quality:** Whether the suggested checks address the known failure scenario.
-- **Memory contribution:** Whether access to historical memory improves results compared with the memory-disabled baseline.
+The evaluation records results such as expected defect retrieval, Hindsight evidence, response outputs, and execution status. It is designed to help assess whether persistent memory contributes useful historical context.
 
-The project includes a synthetic evaluation harness designed to compare memory-enabled and memory-disabled runs. Mocked tests validate application behavior, but they do not establish live Hindsight persistence or real-world accuracy.
-
-Replace the illustrative graphic with measured results before presenting numerical performance claims.
+**Important distinction:** Passing mocked tests verifies application behavior under simulated conditions. It does not establish live Hindsight persistence or prove a real-world accuracy percentage. Those claims require successful provider integration and reproducible evaluation results.
 
 ---
 
-## 4. System Architecture
+## 4. 🏗️ System Architecture
 
 <div align="center">
 
@@ -188,187 +183,278 @@ Replace the illustrative graphic with measured results before presenting numeric
 
 **Frontend — React, Vite and Tailwind CSS**
 
-Provides the interface for submitting defect information and viewing regression analysis results.
+The user interface allows QA engineers to submit defect information and initiate regression investigations. It presents the resulting historical evidence and analysis.
 
 **Backend — Python and FastAPI**
 
-Exposes API endpoints, validates and processes requests, and coordinates communication between the frontend and the memory service.
+The backend exposes API routes, validates requests, coordinates memory operations, and returns structured responses to the frontend.
 
 **Hindsight — Persistent memory**
 
-Stores defect information through retain, retrieves relevant historical context through recall, and supports contextual analysis through reflect.
+The Hindsight service integrates with the official SDK to retain defect information, recall historical memories, and perform reflection.
 
-**Groq — Optional LLM integration**
+**Groq-compatible LLM endpoint — Separate integration**
 
-The backend also contains a separate Groq-compatible LLM test endpoint. It can be used to test LLM responses independently. The current production regression-analysis workflow uses Hindsight recall and reflect; it does not depend on the separate Groq test endpoint.
+The project includes a separate endpoint for testing LLM responses through a Groq-compatible API. It is not part of the current main regression-analysis request path.
 
-### End-to-end workflow
+**Evaluation module**
 
-1. A tester submits a defect through the frontend.
-2. The frontend sends a request to FastAPI.
-3. FastAPI sends the defect details to Hindsight using retain.
-4. During a later investigation, the backend requests relevant historical memories using recall.
-5. Hindsight reflect produces contextual regression insights.
-6. The backend returns the result to the frontend for display.
+The evaluation harness supports controlled synthetic scenarios and records results for comparing evaluation configurations.
 
-The quality of the result depends on the relevance of the stored memories, the retrieval results, and the quality of the analysis.
+### Main request flow
+
+```mermaid
+flowchart TD
+    A[QA Engineer] --> B[React Frontend]
+    B --> C[FastAPI Backend]
+
+    C --> D{Request Type}
+
+    D -->|Submit defect| E[Retain Operation]
+    E --> F[(Hindsight Memory Bank)]
+
+    D -->|Investigate regression| G[Recall Operation]
+    F --> G
+    G --> H[Relevant Historical Memories]
+    H --> I[Reflect Operation]
+    I --> J[Regression Analysis Response]
+    J --> B
+
+    C -.-> K[Separate LLM Test Endpoint]
+    K -.-> L[Groq-Compatible API]
+```
+
+### API endpoints
+
+| Endpoint | Method | Purpose |
+|---|---|---|
+| `/api/health` | GET | Check backend health. |
+| `/api/version` | GET | Inspect backend version information. |
+| `/api/llm/test` | POST | Test the separate LLM integration. |
+| `/api/memory/defects` | POST | Submit defect information for retention. |
+| `/api/regression/recall` | POST | Retrieve relevant historical memories. |
+| `/api/regression/reflect` | POST | Generate a reflection using available context. |
 
 ---
 
-## 5. Step-by-Step Setup Guide
+## 5. 🚀 Step-by-Step Setup Guide
 
-Follow these steps to run Regression Intelligence locally on Windows.
+<div align="center">
+
+<img src="docs/images/setup-guide.png" alt="Step-by-step guide to run Regression Intelligence locally" width="100%"/>
+
+</div>
+
+Follow these steps to run Regression Intelligence on your local machine.
 
 ### Prerequisites
 
-Install the following before starting:
+Install the following:
 
-- Python 3.10 or later
-- Node.js and npm
 - Git
-- A Hindsight API key
-- A Groq API key only if you want to test the separate Groq endpoint
+- Python 3.10 or a compatible version required by the backend dependencies
+- Node.js and npm
+- A Hindsight service configuration and credentials for live memory operations
 
-### Step 1. Clone the repository
+A Groq API key is optional if you want to test the separate Groq-compatible LLM endpoint.
 
-Open PowerShell and run:
+### Step 1: Clone the repository
+
+Open PowerShell or the VS Code terminal.
 
 ```powershell
 git clone https://github.com/Purna3110/hfhy.git
 cd hfhy
 ```
 
-### Step 2. Configure Hindsight
+### Step 2: Set up Hindsight
 
-Create a local environment file by copying the backend template:
+Regression Intelligence uses the Hindsight SDK through its backend service. You need the required Hindsight connection details and credentials before using live memory operations.
+
+**2.1 Create the backend environment file**
+
+Run this command from the repository root:
 
 ```powershell
-cd backend
-Copy-Item .env.example .env
+Copy-Item backend/.env.example backend/.env
 ```
 
-Open `backend/.env` and replace the placeholder values with your credentials.
+**2.2 Configure Hindsight**
+
+Open `backend/.env` in VS Code and fill in the Hindsight settings required by `backend/.env.example`.
+
+The setup may require values such as the following, depending on the configuration supported by your checked-out version:
 
 ```dotenv
-APP_ENV=development
-API_HOST=127.0.0.1
-API_PORT=8000
-FRONTEND_URL=http://localhost:5173
-
 HINDSIGHT_API_KEY=your_hindsight_api_key
-HINDSIGHT_BASE_URL=https://api.hindsight.vectorize.io
-HINDSIGHT_BANK_ID=hackathon-agent-memory
+HINDSIGHT_PROJECT_ID=your_hindsight_project_id
+```
 
+Use the **exact environment variable names required by your project's `.env.example` and Hindsight service implementation**. The names above are examples; do not add variables that your code does not use.
+
+If you want to test the separate Groq-compatible LLM endpoint, configure its variables as well:
+
+```dotenv
 GROQ_API_KEY=your_groq_api_key
 GROQ_BASE_URL=https://api.groq.com/openai/v1
 GROQ_MODEL=llama-3.3-70b-versatile
 ```
 
-Keep your actual API keys private. Never commit your `.env` file to GitHub.
+Do not commit `backend/.env` or publish API keys, access tokens, or other credentials.
 
-The Hindsight service reads the API key, base URL, and bank ID from these environment variables. It initializes the official SDK client and uses the configured bank for retain, recall, and reflect.
+**Important:** This step configures the application to connect to Hindsight. It does not install or launch a self-hosted Hindsight server. Follow the deployment instructions for the Hindsight service you are using.
 
-If you do not need the separate Groq test endpoint, you can leave its key unconfigured. Hindsight credentials are required for the current memory service.
+### Step 3: Set up and run the backend
 
-### Step 3. Run the backend (FastAPI)
+Open a terminal at the repository root.
 
-From the `backend` directory, create and activate a Python virtual environment, install the dependencies, and start the API:
+**Backend run code**
 
 ```powershell
+cd backend
+
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+
+uvicorn app.main:app --reload --port 8001
 ```
 
-Keep this terminal running.
+Keep this terminal open while using the application.
 
-Verify the API using these URLs:
+Open the following URLs in your browser:
 
-- API root: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
-- Swagger documentation: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- Health endpoint: [http://127.0.0.1:8000/api/health](http://127.0.0.1:8000/api/health)
+- **API health:** http://127.0.0.1:8001/api/health
+- **API documentation:** http://127.0.0.1:8001/docs
+- **Version information:** http://127.0.0.1:8001/api/version
 
-The API should start successfully. Requests that use Hindsight also require valid credentials and a reachable Hindsight service.
+The health endpoint should return a healthy status when the backend is running.
 
-### Step 4. Run the frontend (React + Vite)
+A healthy local backend does not, by itself, confirm that external Hindsight or Groq services are reachable.
 
-Open a **second PowerShell terminal** in the project root and run:
+### Step 4: Set up and run the frontend
+
+Open a **second terminal** at the repository root.
+
+**Frontend run code**
 
 ```powershell
 cd frontend
+
 npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite, usually:
+Vite will display the local development URL. Open that URL in your browser; the default is usually:
 
-[http://localhost:5173](http://localhost:5173)
+http://localhost:5173
 
-If the frontend needs a different backend URL, configure `VITE_API_BASE_URL` using the provided `frontend/.env.example` as a reference.
+If the frontend requires a backend URL environment variable, configure it according to the existing frontend environment template and API configuration.
 
-### Step 5. Add a defect and investigate a regression
+### Step 5: Add a defect to memory
+
+1. Open the Regression Intelligence application.
+2. Navigate to the defect submission interface.
+3. Enter the available defect details, such as the title, description, component, severity, and reproduction steps.
+4. Submit the defect.
+5. Confirm that the request succeeds.
+
+When the backend and Hindsight are configured correctly, the defect is sent through the retention workflow.
+
+### Step 6: Run a regression investigation
+
+1. Open **Regression Analysis**.
+2. Enter a new issue or regression scenario related to a previously retained defect.
+3. Submit the investigation.
+4. The backend requests relevant historical memories from Hindsight.
+5. The backend invokes the reflection workflow.
+6. Review the returned historical context and analysis in the UI.
+
+For example, after retaining a payment retry defect, investigate a new payment issue involving a gateway timeout. The system can attempt to retrieve the earlier defect and use its context during the new investigation.
+
+The result depends on the quality of the retained information, the relevance of the recall results, and the availability of the configured Hindsight service.
+
+---
+
+## 6. 🧪 Testing
+
+The backend includes automated tests for the API and Hindsight service behavior.
+
+Run the backend test suite from the `backend` directory with the virtual environment activated:
+
+```powershell
+python -m unittest discover -s tests -v
+```
+
+To build the frontend, run the following from the `frontend` directory:
+
+```powershell
+npm run build
+```
+
+The repository also includes an evaluation harness for controlled synthetic regression scenarios.
+
+Mocked tests and synthetic evaluations are useful for verifying behavior, but they should be distinguished from tests against live external services.
+
+---
+
+## 7. 🛠️ Technology Stack
 
 <div align="center">
 
-<img src="docs/images/setup-guide.png" alt="Step-by-step guide to use Regression Intelligence" width="100%"/>
+[![My Skills](https://skillicons.dev/icons?i=react,vite,tailwind,python,fastapi,git,github&perline=7)](https://skillicons.dev)
 
 </div>
 
-Once both services are running:
-
-1. Open the application in your browser.
-2. Navigate to the defect submission interface.
-3. Submit a defect with its title, affected component, severity, root cause, fix, and related test cases.
-4. The backend sends the defect to Hindsight using retain.
-5. Navigate to Regression Analysis and enter a new investigation.
-6. The backend retrieves relevant historical defects using recall.
-7. Hindsight reflect generates insights using the available historical context.
-8. Review the returned memories and regression insights in the interface.
-
-**Example scenario:** A tester records a payment defect caused by a gateway timeout. During a later investigation of a similar payment retry issue, the system can retrieve the historical defect and its recorded fix, if that memory is available and relevant. The tester can then use the historical evidence to decide which regression checks to perform.
-
-This is an illustrative workflow, not a claim that the application automatically executes tests or detects every recurring defect.
+| Layer | Technologies |
+|---|---|
+| Frontend | React, Vite, Tailwind CSS |
+| Backend | Python, FastAPI |
+| Memory | Hindsight, official Python SDK |
+| LLM integration | Groq-compatible API for the separate test endpoint |
+| Testing | Python unittest / pytest, synthetic evaluation harness |
+| Version control | Git, GitHub |
 
 ---
 
-## 6. Current Scope and Future Improvements
+## 8. 🔮 Future Improvements
 
-### Current scope
+Potential directions for extending the project include:
 
-- React-based frontend with Vite.
-- FastAPI backend with versioned API routing.
-- Hindsight SDK integration for defect retention, retrieval, and reflection.
-- A separate Groq-compatible LLM test endpoint.
-- Synthetic evaluation scenarios for comparing memory-enabled and memory-disabled behavior.
-- Automated backend tests for important memory-service behaviors.
+- Displaying a searchable history of retained defects.
+- Improving the explainability of retrieved memories and generated analysis.
+- Evaluating retrieval relevance and analysis quality using a larger, reproducible dataset.
+- Adding more robust handling when recall succeeds but reflection fails.
+- Exploring automated links between source-code changes, test cases, and historical defects.
+- Integrating regression test recommendations based on relevant defect history.
 
-### Current limitations
-
-- Some Overview and Test Cases screens use demo data.
-- The application does not automatically execute regression tests.
-- The quality of analysis depends on the historical defects available in memory.
-- Mocked tests do not prove live Hindsight persistence across sessions.
-- The illustrative performance percentages have not been established as real benchmark results.
-- Live provider connectivity and real-world accuracy must be verified separately.
-
-### Future improvements
-
-- Integrate with issue trackers such as Jira or GitHub Issues.
-- Connect source-code changes and commits with historical defects.
-- Recommend specific regression test cases from retrieved defect evidence.
-- Add measured evaluation reports and retrieval-quality metrics.
-- Improve traceability between requirements, defects, fixes, and test cases.
-- Add more comprehensive end-to-end testing and live integration validation.
+These are potential improvements, not claims that all of these capabilities are currently implemented.
 
 ---
+
+## 9. 🔐 Security and Configuration
+
+- Never commit `.env` files, API keys, access tokens, or private credentials.
+- Use the provided `.env.example` files as configuration templates.
+- Keep development and production memory banks appropriately isolated.
+- Use synthetic defect data for demonstrations and evaluations unless you have permission to use real defect records.
+- Avoid placing confidential source code, customer data, or sensitive logs into an external memory service without authorization.
+
+---
+
+## 10. 👩‍💻 Project Information
+
+**Project:** Regression Intelligence  
+**Tagline:** A QA Agent That Never Forgets a Bug  
+**Focus:** AI-assisted software testing, defect memory, and regression analysis  
+**Repository:** [Purna3110/hfhy](https://github.com/Purna3110/hfhy)
+
+Built to explore how persistent agent memory can help software quality teams reuse historical knowledge and investigate recurring defects more effectively.
 
 <div align="center">
 
-### Built for QA teams that learn from every bug.
-
-**Regression Intelligence — A QA Agent That Never Forgets a Bug**
-
-Built with React, FastAPI, and Hindsight.
+**Retain knowledge. Recall evidence. Reflect on regressions.**
 
 </div>
