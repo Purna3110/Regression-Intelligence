@@ -1,0 +1,46 @@
+# Environment files
+.env
+.env.*
+*.env
+backend/.env
+backend/.env.*
+!/.env.example
+!/backend/.env.example
+!/frontend/.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.venv/
+backend/.venv/
+backend/evaluation-results/
+venv/
+env/
+.python-version
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Python packaging
+build/
+dist/
+*.egg-info/
+
+# Node / frontend
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.vite/
+
+# Editor / OS
+/.vscode/
+.github/*
+/.github/copilot-instructions.md
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
